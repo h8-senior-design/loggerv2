@@ -51,10 +51,10 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
           }
           bundled_data.append(parsed_data)
 
-        data = self.request.recv(4)
+        data = self.request.recv(4, socket.MSG_WAITALL)
         find_end = struct.unpack_from('I', data)[0]
         if find_end != 0xFFFFFFFF:
-          print('data bundle was corrupted')
+          print(f'data bundle was corrupted, {find_end}')
           bundled_data.clear()
 
         print('found end of data bundle')
